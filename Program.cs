@@ -153,30 +153,34 @@ public class Program
         Console.Write("Введіть кількість стовпців: ");
         int m = int.Parse(Console.ReadLine());
 
-        int[,] matrix = new int[n, m];
-        int[] results = new int[n]; 
+        int[][] jagged = new int[n][];
+        for (int i = 0; i < n; i++)
+            jagged[i] = new int[m];
+
+        int[] results = new int[n];
         Random rand = new Random();
 
-        Console.WriteLine("\nПочаткова матриця:");
+        Console.WriteLine("\nПочаткова матриця (зубчастий масив):");
         for (int i = 0; i < n; i++)
         {
             for (int j = 0; j < m; j++)
             {
-                matrix[i, j] = rand.Next(-20, 81);
-                Console.Write(matrix[i, j] + "\t");
+                jagged[i][j] = rand.Next(-20, 81);
+                Console.Write(jagged[i][j] + "\t");
             }
             Console.WriteLine();
         }
 
         for (int i = 0; i < n; i++)
         {
-            int foundIndex = -1; 
-            for (int j = 0; j < m; j++)
+            int foundIndex = -1;
+            int rowLen = jagged[i].Length;
+            for (int j = 0; j < rowLen; j++)
             {
-                if (matrix[i, j] < 0)
+                if (jagged[i][j] < 0)
                 {
-                    foundIndex = j; 
-                    break;         
+                    foundIndex = j;
+                    break;
                 }
             }
             results[i] = foundIndex;
@@ -194,7 +198,7 @@ public class Program
                 Console.WriteLine($"Рядок {i}: від'ємних елементів не знайдено");
             }
         }
-    }
+    }   
     static void Main1()
     {
         Console.OutputEncoding = System.Text.Encoding.UTF8;
