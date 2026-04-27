@@ -149,33 +149,40 @@ public class Program
     static void task4()
     {
         Console.Write("Введіть кількість рядків: ");
-        int n = int.Parse(Console.ReadLine());
-        Console.Write("Введіть кількість стовпців: ");
-        int m = int.Parse(Console.ReadLine());
+        if (!int.TryParse(Console.ReadLine(), out int n)) return;
 
         int[][] jagged = new int[n][];
-        for (int i = 0; i < n; i++)
-            jagged[i] = new int[m];
-
-        int[] results = new int[n];
         Random rand = new Random();
 
-        Console.WriteLine("\nПочаткова матриця (зубчастий масив):");
         for (int i = 0; i < n; i++)
         {
-            for (int j = 0; j < m; j++)
+            Console.Write($"Введіть кількість стовпців для рядка {i}: ");
+            if (int.TryParse(Console.ReadLine(), out int m))
             {
-                jagged[i][j] = rand.Next(-20, 81);
+                jagged[i] = new int[m];
+                for (int j = 0; j < m; j++)
+                {
+                    jagged[i][j] = rand.Next(-20, 81);
+                }
+            }
+        }
+
+        Console.WriteLine("\nСхідчастий масив:");
+        for (int i = 0; i < jagged.Length; i++)
+        {
+            Console.Write($"Рядок {i}: ");
+            for (int j = 0; j < jagged[i].Length; j++)
+            {
                 Console.Write(jagged[i][j] + "\t");
             }
             Console.WriteLine();
         }
 
-        for (int i = 0; i < n; i++)
+        Console.WriteLine("\nРезультати:");
+        for (int i = 0; i < jagged.Length; i++)
         {
             int foundIndex = -1;
-            int rowLen = jagged[i].Length;
-            for (int j = 0; j < rowLen; j++)
+            for (int j = 0; j < jagged[i].Length; j++)
             {
                 if (jagged[i][j] < 0)
                 {
@@ -183,33 +190,21 @@ public class Program
                     break;
                 }
             }
-            results[i] = foundIndex;
-        }
 
-        Console.WriteLine("\nРезультати (індекси перших від'ємних елементів у рядках):");
-        for (int i = 0; i < n; i++)
-        {
-            if (results[i] != -1)
+            if (foundIndex != -1)
             {
-                Console.WriteLine($"Рядок {i}: перший від'ємний елемент у стовпці з індексом {results[i]} (номер {results[i] + 1})");
+                Console.WriteLine($"Рядок {i}: індекс {foundIndex} (номер {foundIndex + 1})");
             }
             else
             {
-                Console.WriteLine($"Рядок {i}: від'ємних елементів не знайдено");
+                Console.WriteLine($"Рядок {i}: від'ємних елементів немає");
             }
         }
-    }   
-    static void Main1()
+    }
+    static void Main()
     {
         Console.OutputEncoding = System.Text.Encoding.UTF8;
-        Console.WriteLine("Завдання 1.1:");
-        task1_1();
-        Console.WriteLine("\nЗавдання 1.2:");
-        task1_2();
-        Console.WriteLine("\nЗавдання 2:");
-        task2();
-        Console.WriteLine("\nЗавдання 3:");
-        task3();
+        
         Console.WriteLine("\nЗавдання 4:");
         task4();
     }
